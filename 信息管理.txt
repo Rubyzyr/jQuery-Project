@@ -1,0 +1,69 @@
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+
+namespace 学生成绩管理系统
+{
+    public partial class FrmjsrkManage : Form
+    {
+        public FrmjsrkManage()
+        {
+            InitializeComponent();
+        }
+        public static string jsbh;
+        public static string JSBH
+        {
+            get { return jsbh ; }
+            set { jsbh  = value; }
+        }
+        private void button1_Click(object sender, EventArgs e)
+        {
+            string strSql;
+            string condition = "";
+            datasql data = new datasql();
+            DataSet ds;
+            if (textBox1.Text != "")
+            {
+                condition += " and jsqk.jsbh='" + textBox1.Text + "'";
+            }
+            if (textBox2.Text != "")
+            {
+                condition += " and kc.kch='" + textBox2.Text + "'";
+            }
+           
+            strSql = "select jsqk.jsbh as 教师编号,kc.kch as 课程号  from jsqk,kc,jsrk where jsqk.jsbh=jsrk.jsbh and kc.kch=jsrk.kch";
+            data.dataCon();
+            ds = data.getDataset(strSql);
+            dataGridView1.DataSource = ds.Tables[0];
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            string strSql;
+            datasql data = new datasql();
+            strSql = "delete from jsrk where jsbh='" + dataGridView1.CurrentRow.Cells[0].Value.ToString() + "'";
+            data.dataCon();
+            if (data.sqlExec(strSql))
+            {
+                MessageBox.Show("删除成功！！");
+            }
+            else
+            {
+                MessageBox.Show("删除失败！！");
+            }
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            FrmjsrkManage.jsbh = dataGridView1.CurrentRow.Cells[0].Value.ToString();
+            FrmjsrkEdit a = new FrmjsrkEdit();
+            a.Show();
+        }
+    }
+}

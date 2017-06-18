@@ -1,0 +1,69 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Data;
+using System.Data.SqlClient;
+using System.Windows.Forms;
+
+namespace 学生成绩管理系统
+{
+    class datasql
+    {
+        private string strDSN;
+        SqlConnection sqlcon;
+        public void dataCon()
+        {
+            strDSN = "Data Source=7A8O8UKODSCI4ZE;Initial Catalog=cjxt;Integrated Security=True";
+            sqlcon = new SqlConnection(strDSN);
+           
+        }
+        //获取Dataset
+        public DataSet getDataset(string sql)
+        {
+            DataSet ds = new DataSet();
+            sqlcon.Open();
+            try
+            {
+                SqlCommand sqlcom = new SqlCommand(sql, sqlcon);
+                SqlDataAdapter sqlda = new SqlDataAdapter(sqlcom);
+                sqlda.Fill(ds);
+                return ds;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.ToString());
+            }
+            finally
+            {
+                sqlcon.Close();
+            }
+        }
+        public bool sqlExec(string sql)
+        {
+            try 
+            {
+                sqlcon.Open();
+             }
+            catch
+            {
+                MessageBox.Show("数据库未连接");
+            }
+            try
+            {
+                SqlCommand sqlcom = new SqlCommand(sql, sqlcon);
+                sqlcom.ExecuteNonQuery();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "提示");
+                return false;
+            }
+            finally
+            {
+                sqlcon.Close();
+            }
+        }
+    }
+}

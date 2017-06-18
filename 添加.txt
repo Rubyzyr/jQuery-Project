@@ -1,0 +1,42 @@
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+
+namespace 学生成绩管理系统
+{
+    public partial class FrmxbAdd : Form
+    {
+        public FrmxbAdd()
+        {
+            InitializeComponent();
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+             string strSql;
+            datasql data = new datasql();
+            strSql = "insert into xb(xbh,xbm) values ('" + textBox1.Text + "','" + textBox2.Text + "')";
+            data.dataCon();
+            if( data .sqlExec (strSql ))
+            {
+                MessageBox .Show ("添加成功！！");
+            }
+            else 
+            {
+                MessageBox .Show ("添加失败！！");
+            }
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+         this.Close();
+        }
+        }
+    }
+
